@@ -64,6 +64,13 @@ app.get(/(.*)/, async (req, res) => {
     }
 
     const movieSlugs = posters.map((poster) => poster.slug);
+    if(movieSlugs.length == 0) {
+        isFinished = true;
+        appLogger.error("Found 0 movies in list. Throwing error.")
+        chunk.fail(500, "No movies found.");
+        isConnectionOpen = false;
+        return;
+    }
 
     const onMovie = (movie: LetterboxdMovieDetails) => {
         // If there's no tmdb-id it may be a tv-show

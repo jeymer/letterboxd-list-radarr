@@ -43,6 +43,9 @@ app.get(/(.*)/, async (req, res) => {
     const limit = req.query.limit
         ? Number.parseInt(req.query.limit)
         : undefined;
+    const allowEmpty = req.query.allowEmpty
+        ? (req.query.allowEmpty == "true" ? true : false)
+        : false;
 
     let posters: LetterboxdPoster[];
 
@@ -64,7 +67,7 @@ app.get(/(.*)/, async (req, res) => {
     }
 
     const movieSlugs = posters.map((poster) => poster.slug);
-    if(movieSlugs.length == 0) {
+    if(!allowEmpty && movieSlugs.length == 0) {
         isFinished = true;
         appLogger.error("Found 0 movies in list. Throwing error.")
         chunk.fail(500, "No movies found.");

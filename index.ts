@@ -61,7 +61,7 @@ app.get(/(.*)/, async (req, res) => {
     } catch (e: any) {
         isFinished = true;
         appLogger.error(`Failed to fetch posters for ${slug} - ${e?.message}`);
-        chunk.fail(404, e?.message);
+        chunk.fail(500, e?.message);
         isConnectionOpen = false;
         return;
     }
